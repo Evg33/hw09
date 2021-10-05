@@ -1,2 +1,20 @@
 ---
 # tasks file for web
+- name: Start container
+  docker_container:
+    name: web
+    image: evg33/hw09web:{{ bld }}
+    state: started
+    ports:
+     - "80:8080"
+    auto_remove: yes
+    pull: yes
+    recreate: yes
+
+- name: Get my public IP
+  ipify_facts:
+  register: public_ip
+
+- name: Show url
+  debug: msg="    http://{{ hostvars[inventory_hostname]['ipify_public_ip'] }}/hello-1.0    "
+
