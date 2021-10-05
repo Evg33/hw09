@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: build-server configuration
+  hosts: build
+  become: yes
+
+  roles:
+   - common
+   - build
+
+- name: web-server configuration
+  hosts: web
+  become: yes
+
+  roles:
+   - common
+   - web
