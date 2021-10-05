@@ -1,0 +1,11 @@
+---
+# vars file for build
+
+#Build name
+bld: 000
+
+# DockerHUB cred
+dhlogin: login
+dhpass: password-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+dhemail: dh@example.com
+

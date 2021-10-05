@@ -1,2 +1,50 @@
 ---
 # tasks file for build
+- name: Ensure src dir exists
+  file:
+   path: src
+   state: directory
+
+- name: Build war file
+  docker_container:
+    name: hw09app
+    image: maven:alpine
+    volumes:
+      - ./src:/tmp/src
+    working_dir: /tmp/src
+    command: bash -c "apk --no-cache add git && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git && mvn -T 1C -Dmaven.test.skip clean package -f boxfuse-sample-java-war-hello && cp boxfuse-sample-java-war-hello/target/hello-1.0.war . && rm -rf boxfuse-sample-java-war-hello"
+    state: started
+    recreate: yes
+    detach: false
+
+- debug:
+    var: docker_container.Output
+
+- name: copy Dockerfile
+  copy: src=Dockerfile dest=src/Dockerfile
+
+- name: build container image
+  docker_image:
+    name: hw09web
+    build:
+      path: src
+      pull: no
+    source: build
+
+- name: Remove war file
+  file:
+    path: src/hello-1.0.war
+    state: absent
+
+- name: DockerHub Login
+  docker_login:
+    username: "{{ dhlogin }}"
+    password: "{{ dhpass }}"
+    email: "{{ dhemail }}"
+
+- name: Tag and push to docker hub
+  docker_image:
+    name: hw09web
+    source: local
+    repository: evg33/hw09web:{{ bld }}
+    push: yes
