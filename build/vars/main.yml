@@ -1,5 +1,5 @@
 ---
 # vars file for build
-bld: 000
+bld: 0.0.1
 appgit: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
 appfile: hello-1.0.war
