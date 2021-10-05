@@ -1,2 +1,11 @@
 ---
 # tasks file for common
+- name: Ensure pkgs is present
+  apt:
+    name: [docker.io, python3-pip, screen, mc, htop, ncdu, mtr-tiny]
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Ensure python modules is present
+  pip:
+    name: docker
