@@ -1,5 +1,6 @@
 ---
 # tasks file for build
+
 - name: Ensure src dir exists
   file:
    path: src
@@ -36,11 +37,16 @@
     path: src/hello-1.0.war
     state: absent
 
+- name: Include vars of DockerHUB
+  include_vars:
+    file: dockerhub.yml
+    name: dockerhub
+
 - name: DockerHub Login
   docker_login:
-    username: "{{ dhlogin }}"
-    password: "{{ dhpass }}"
-    email: "{{ dhemail }}"
+    username: "{{ dockerhub.dhlogin }}"
+    password: "{{ dockerhub.dhpass }}"
+    email: "{{ dockerhub.dhemail }}"
 
 - name: Tag and push to docker hub
   docker_image:
