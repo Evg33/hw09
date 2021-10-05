@@ -20,14 +20,14 @@
       bash -c "apk --no-cache add git &&
       git clone "{{ appgit }}" &&
       mvn -T 1C -Dmaven.test.skip clean package -f boxfuse-sample-java-war-hello &&
-      cp boxfuse-sample-java-war-hello/target/hello-1.0.war . &&
+      cp boxfuse-sample-java-war-hello/target/{{ appfile }} . &&
       rm -rf boxfuse-sample-java-war-hello"
 
 - debug:
     var: docker_container.Output
 
-- name: copy Dockerfile
-  copy: src=Dockerfile dest=src/Dockerfile
+- name: make Dockerfile from template
+  template: src=Dockerfile.j2 dest=src/Dockerfile
 
 - name: build container image
   docker_image:
@@ -39,7 +39,7 @@
 
 - name: Remove war file
   file:
-    path: src/hello-1.0.war
+    path: src/{{ appfile }}
     state: absent
 
 - name: Include vars of DockerHUB

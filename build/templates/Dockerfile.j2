@@ -1,0 +1,2 @@
+FROM tomcat:alpine
+COPY {{ appfile }} /usr/local/tomcat/webapps/{{ appfile }}
