@@ -1,3 +1,4 @@
 ---
 # vars file for build
 bld: 000
+appgit: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git

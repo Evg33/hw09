@@ -13,7 +13,8 @@
     volumes:
       - ./src:/tmp/src
     working_dir: /tmp/src
-    command: bash -c "apk --no-cache add git && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git && mvn -T 1C -Dmaven.test.skip clean package -f boxfuse-sample-java-war-hello && cp boxfuse-sample-java-war-hello/target/hello-1.0.war . && rm -rf boxfuse-sample-java-war-hello"
+#    command: bash -c "apk --no-cache add git && git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git && mvn -T 1C -Dmaven.test.skip clean package -f boxfuse-sample-java-war-hello && cp boxfuse-sample-java-war-hello/target/hello-1.0.war . && rm -rf boxfuse-sample-java-war-hello"
+    command: bash -c "apk --no-cache add git && git clone "{{ appgit }}" && mvn -T 1C -Dmaven.test.skip clean package -f boxfuse-sample-java-war-hello && cp boxfuse-sample-java-war-hello/target/hello-1.0.war . && rm -rf boxfuse-sample-java-war-hello"
     state: started
     recreate: yes
     detach: false
@@ -44,9 +45,9 @@
 
 - name: DockerHub Login
   docker_login:
-    username: "{{ dockerhub.dhlogin }}"
-    password: "{{ dockerhub.dhpass }}"
-    email: "{{ dockerhub.dhemail }}"
+    username: "{{ dockerhub.login }}"
+    password: "{{ dockerhub.pass }}"
+    email: "{{ dockerhub.email }}"
 
 - name: Tag and push to docker hub
   docker_image:
